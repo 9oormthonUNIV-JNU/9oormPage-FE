@@ -6,9 +6,9 @@ PUSH
 
 1. git checkout feat_본인이름
 2. local에서 본인 branch에서 작업 후
-git add (작업파일)
-git commit
-git push origin feat_이름 으로 원격 레포에 올리기
+   git add (작업파일)
+   git commit
+   git push origin feat_이름 으로 원격 레포에 올리기
 3. 원격 레포에서 main로 PR 보내기
 
 PULL

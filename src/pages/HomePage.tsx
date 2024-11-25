@@ -1,7 +1,5 @@
-import Header from "../components/common/atoms/Header";
-
 const HomePage = () => {
-  return <Header />;
+  return <div>Home Page</div>;
 };
 
 export default HomePage;

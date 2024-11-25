@@ -12,10 +12,13 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import MemberManagePage from "./pages/AdminPage/MemberManagePage";
 import PostManagePage from "./pages/AdminPage/PostManagePage";
 import ScheduleManagePage from "./pages/AdminPage/ScheduleManagePage";
+import Header from "./components/common/atoms/Header";
+import Footer from "./components/common/atoms/Footer";
 
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/activity" element={<ActivityPage />} />
@@ -32,6 +35,7 @@ function App() {
           <Route path="schedule-manage" element={<ScheduleManagePage />} />
         </Route>
       </Routes>
+      <Footer />
     </Router>
   );
 }

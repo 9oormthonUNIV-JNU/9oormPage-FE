@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ActivityPage from "./pages/ActivityPage";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import MemberPage from "./pages/MemberPage";
+import MyPage from "./pages/MyPage";
+import PendingPage from "./pages/PendingPage";
+import RecruitPage from "./pages/RecruitPage";
+import SignupPage from "./pages/SignupPage";
+import SchedulePage from "./pages/SchedulePage";
+import AdminPage from "./pages/AdminPage/AdminPage";
+import MemberManagePage from "./pages/AdminPage/MemberManagePage";
+import PostManagePage from "./pages/AdminPage/PostManagePage";
+import ScheduleManagePage from "./pages/AdminPage/ScheduleManagePage";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/member" element={<MemberPage />} />
+        <Route path="/recruit" element={<RecruitPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/pending" element={<PendingPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/admin" element={<AdminPage />}>
+          <Route path="member-manage" element={<MemberManagePage />} />
+          <Route path="post-manage" element={<PostManagePage />} />
+          <Route path="schedule-manage" element={<ScheduleManagePage />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

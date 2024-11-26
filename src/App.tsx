@@ -14,13 +14,11 @@ import PostManagePage from "./pages/AdminPage/PostManagePage";
 import ScheduleManagePage from "./pages/AdminPage/ScheduleManagePage";
 import Header from "./components/common/atoms/Header";
 import Footer from "./components/common/atoms/Footer";
-import HomeCard from "./components/common/molecules/HomeCard";
 
 function App() {
   return (
     <Router>
       <Header />
-      <HomeCard />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/activity" element={<ActivityPage />} />

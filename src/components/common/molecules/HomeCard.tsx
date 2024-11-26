@@ -1,6 +1,6 @@
 import CustomCard from "../atoms/CustomCard";
 
-type HomeCardProps = {
+export type HomeCardProps = {
   icon: string;
   title: string;
   discription: string;
@@ -15,7 +15,7 @@ const HomeCard: React.FC<HomeCardProps> = ({
 }) => {
   return (
     <CustomCard
-      className="lg:w-96 md:w-72 h-[440px] flex flex-col overflow-hidden transition-all duration-300 ease-out hover:scale-[101%] hover:shadow-2xl"
+      className="w-96 h-[440px] flex flex-col overflow-hidden transition-all duration-300 ease-out hover:scale-[101%] hover:shadow-2xl"
       onMouseEnter={(e) =>
         (e.currentTarget.style.boxShadow =
           "0px 0px 30px 12px rgba(0, 0, 0, 0.15)")
@@ -32,7 +32,6 @@ const HomeCard: React.FC<HomeCardProps> = ({
         </div>
         <div className="text-b3 mt-3 h-44">{discription}</div>
       </div>
-      {/* 이미지 아래로 밀어내기 */}
       <div className="w-full h-[190px]">
         <img className="w-full h-full object-cover" src={img} />
       </div>

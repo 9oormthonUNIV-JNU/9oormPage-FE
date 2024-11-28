@@ -5,19 +5,19 @@ export type MemberCardProps = {
   name: string;
   cardinal: number;
   part: string;
-  img: string;
+  image: string;
 };
 
 const MemberCard: React.FC<MemberCardProps> = ({
   name,
   cardinal,
   part,
-  img,
+  image,
 }) => {
   return (
     <CustomCard className="w-80 h-[470px] flex-col">
       <div className="h-80 w-full">
-        <img src={img} className="w-full h-full object-cover" />
+        <img src={image} className="w-full h-full object-cover" />
       </div>
       <div className="px-5 py-5 flex flex-col gap-5">
         <div className="text-b2">{name}</div>

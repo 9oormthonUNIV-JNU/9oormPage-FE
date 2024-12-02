@@ -14,11 +14,17 @@ import PostManagePage from "./pages/AdminPage/PostManagePage";
 import ScheduleManagePage from "./pages/AdminPage/ScheduleManagePage";
 import Header from "./components/common/atoms/Header";
 import Footer from "./components/common/atoms/Footer";
+import FilterButton from "./components/common/atoms/FilterButton";
 
 function App() {
   return (
     <Router>
       <Header />
+      <FilterButton
+        filterType="파트별"
+        options={["PM", "PD", "FE", "BE"]}
+        onClick={() => {}}
+      />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/activity" element={<ActivityPage />} />

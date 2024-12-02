@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function createGlobalState<T>(queryKey: unknown, initialData: T | null = null) {
   return () => {

@@ -9,12 +9,14 @@ import { postCode } from "../apis/signup";
 import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [usercode, setUserCode] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [user_cardinal, setCardinal] = useState<string>("");
-  const [user_part, setPart] = useState<string>("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    usercode: "",
+    password: "",
+    user_cardinal: "",
+    user_part: "",
+  });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [showAuthCodeInput, setShowAuthCodeInput] = useState<boolean>(false); // State to control visibility of auth code input
@@ -22,26 +24,32 @@ const SignupPage = () => {
 
   const nav = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
+  const validateForm = () => {
+    const { name, email, usercode, password, user_cardinal, user_part } =
+      formData;
     const newErrors: { [key: string]: string } = {};
 
     if (!name) newErrors.name = "이름을 입력해주세요.";
     if (!email) newErrors.email = "이메일을 입력해주세요.";
     if (!usercode) newErrors.authCode = "인증코드를 입력해주세요.";
-    if (!password) {
-      newErrors.password = "비밀번호를 입력해주세요.";
-    } else if (
-      !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/.test(password)
-    ) {
+    if (!password) newErrors.password = "비밀번호를 입력해주세요.";
+    else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/.test(password))
       newErrors.password = "비밀번호가 조건에 맞지 않습니다.";
-    }
     if (!user_cardinal) newErrors.cardinal = "기수를 선택해주세요.";
     if (!user_part) newErrors.part = "파트를 선택해주세요.";
 
-    // If errors found, update the state and return
+    return newErrors;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -50,17 +58,16 @@ const SignupPage = () => {
     setLoading(true);
 
     try {
-      const data = {
+      const { email, password, name, user_cardinal, user_part } = formData;
+      const result = await postSignup({
         email,
         password,
         name,
         user_cardinal,
         user_part,
-      };
+      });
 
-      const result = await postSignup(data);
-
-      if (result && result.data.success) {
+      if (result?.data.success) {
         nav("/pending");
       } else {
         setErrors({ general: "회원가입에 실패했습니다." });
@@ -74,6 +81,8 @@ const SignupPage = () => {
   };
 
   const handleAuthButtonClick = async () => {
+    const { email } = formData;
+
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       setErrors((prev) => ({
         ...prev,
@@ -85,7 +94,7 @@ const SignupPage = () => {
 
     try {
       const result = await sendEmail(email);
-      if (result && result.data.success) {
+      if (result?.data.success) {
         setShowAuthCodeInput(true);
       } else {
         setErrors({ general: "인증코드 전송에 실패했습니다." });
@@ -97,24 +106,23 @@ const SignupPage = () => {
   };
 
   const handleAuthCodeSubmit = async () => {
+    const { usercode, email } = formData;
+
     if (!usercode) {
-      setErrors((prev) => ({ ...prev, authCode: "인증코드를 입력해주세요." }));
+      setErrors({ authCode: "인증코드를 입력해주세요." });
       return;
     }
 
     const numericUserCode = Number(usercode);
 
     if (isNaN(numericUserCode)) {
-      setErrors((prev) => ({
-        ...prev,
-        authCode: "유효한 인증코드를 입력해주세요.",
-      }));
+      setErrors({ authCode: "유효한 인증코드를 입력해주세요." });
       return;
     }
 
     try {
       const result = await postCode(email, numericUserCode);
-      if (result && result.data.success) {
+      if (result?.data.success) {
         setErrors({ general: "인증 완료!" });
       } else {
         setErrors({ general: "인증코드가 일치하지 않습니다." });
@@ -124,6 +132,9 @@ const SignupPage = () => {
       setErrors({ general: "인증 실패. 다시 시도해주세요." });
     }
   };
+
+  const { name, email, usercode, password, user_cardinal, user_part } =
+    formData;
 
   return (
     <div className="flex flex-col justify-center items-center md:px-36 lg:px-[500px]">
@@ -142,7 +153,7 @@ const SignupPage = () => {
             placeholder="김구름"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleChange}
           />
           {errors.name && (
             <div className="text-navi1 text-red pl-2.5">{errors.name}</div>
@@ -156,7 +167,7 @@ const SignupPage = () => {
               placeholder="abcd123@gmail.com"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
             />
             <button
               type="button"
@@ -176,7 +187,7 @@ const SignupPage = () => {
                   placeholder="인증코드 입력"
                   type="text"
                   value={usercode}
-                  onChange={(e) => setUserCode(e.target.value)}
+                  onChange={handleChange}
                 />
                 <button
                   type="button"
@@ -202,12 +213,12 @@ const SignupPage = () => {
               placeholder="비밀번호"
               type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
             />
             <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-transparent mt-5"
-              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+              onClick={() => setShowPassword(!showPassword)}
             >
               <img src={icon_eye} width={30} />
             </button>
@@ -224,7 +235,9 @@ const SignupPage = () => {
           <DropdownButton
             label="기수 선택"
             value={user_cardinal}
-            onChange={(value) => setCardinal(value)}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, user_cardinal: value }))
+            }
             options={[
               { label: "1기", value: "1" },
               { label: "2기", value: "2" },
@@ -240,7 +253,9 @@ const SignupPage = () => {
           <DropdownButton
             label="파트 선택"
             value={user_part}
-            onChange={(value) => setPart(value)}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, user_part: value }))
+            }
             options={[
               { label: "PM", value: "PM" },
               { label: "PD", value: "PD" },

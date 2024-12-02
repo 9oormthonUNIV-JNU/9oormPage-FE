@@ -10,9 +10,9 @@ const LoginTemplate = () => {
   const [password, setPassword] = useState<string>("");
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center lg:px-32 md:px-16">
+    <div className="flex flex-col justify-center items-center py-36 md:px-16 lg:px-36">
       <span className="text-h2">LOGIN</span>
-      <div className="flex flex-col gap-2 w-full my-10">
+      <div className="flex flex-col gap-2 my-10 w-full">
         <CustomInput
           value={email}
           onChange={(e) => setEmail(e.target.value)}

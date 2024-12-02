@@ -14,16 +14,11 @@ import PostManagePage from "./pages/AdminPage/PostManagePage";
 import ScheduleManagePage from "./pages/AdminPage/ScheduleManagePage";
 import Header from "./components/common/atoms/Header";
 import Footer from "./components/common/atoms/Footer";
-import MemberCard from "./components/common/molecules/MemberCard";
-import img_flower from "../public/images/img_flower.svg";
-import ActivityCard from "./components/common/molecules/ActivityCard";
 
 function App() {
   return (
     <Router>
       <Header />
-      <MemberCard name="최지원" part="PD" cardinal={3} img={img_flower} />
-      <ActivityCard />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/activity" element={<ActivityPage />} />

@@ -18,7 +18,6 @@ const SignupPage = () => {
     user_part: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [loading, setLoading] = useState<boolean>(false);
   const [showAuthCodeInput, setShowAuthCodeInput] = useState<boolean>(false); // State to control visibility of auth code input
   const [showPassword, setShowPassword] = useState<boolean>(false); // State to control visibility of password
 
@@ -55,8 +54,6 @@ const SignupPage = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
       const { email, password, name, user_cardinal, user_part } = formData;
       const result = await postSignup({
@@ -75,8 +72,6 @@ const SignupPage = () => {
     } catch (error) {
       console.error("회원가입 실패 : ", error);
       setErrors({ general: "회원가입 중 오류가 발생했습니다." });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -269,7 +264,7 @@ const SignupPage = () => {
         </div>
 
         <CustomButton type="submit" className="mt-10 mb-36">
-          {loading ? "처리 중..." : "SIGN UP"}
+          SIGN UP
         </CustomButton>
       </form>
     </div>

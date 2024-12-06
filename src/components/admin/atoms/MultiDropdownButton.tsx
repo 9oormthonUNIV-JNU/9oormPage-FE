@@ -107,13 +107,13 @@ const MultiDropdownButton: React.FC<MultiDropdownButtonProps> = ({
             maxHeight: "200px",
             overflowY: "auto",
           }}
-          className="absolute right-0 bg-[#F7F7F7] top-[calc(100%+10px)] border rounded-[10px] p-3 z-10 "
+          className="absolute flex flex-col gap-2 right-0 bg-[#F7F7F7] top-[calc(100%+10px)] border rounded-[10px] p-3 z-10 "
         >
           {options.map((option) => (
             <div
               key={option.value}
               onClick={() => handleOptionClick(option.value)}
-              className={`flex items-center mt-2 px-2 py-1 cursor-pointer bg-[#F7F7F7] rounded-[10px] z-10 p-3 hover:bg-[#D8D8D8] text-navi1 ${
+              className={`flex items-center px-2 py-1 cursor-pointer bg-[#F7F7F7] rounded-[10px] z-10 p-3 hover:bg-[#D8D8D8] text-navi1 ${
                 selectedOptions.includes(option.value) ? "bg-[#D8D8D8]" : ""
               }`}
             >

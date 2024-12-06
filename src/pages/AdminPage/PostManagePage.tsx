@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import CustomTag from "../../components/common/atoms/CustomTag";
 import LabelButton from "../../components/common/atoms/LabelButton";
-
-export type Post = {
-  title: string;
-  category: "seminar" | "networking" | "project" | "study";
-  date: string;
-};
+import CategoryModal from "../../components/admin/molecules/CategoryModal";
+import PostModal from "../../components/admin/molecules/PostModal";
 
 const PostManagePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 10; // 한 페이지에 표시할 게시글 수
+  const [showModal, setShowModal] = useState(false); // SelectModal 상태
+  const [showPostModal, setShowPostModal] = useState(false); // PostModal 상태
+  const postsPerPage = 10;
 
-  const mockData = [];
+  const mockData = [
+    { title: "첫 번째 게시글", category: "seminar", date: "2024-12-01" },
+    { title: "두 번째 게시글", category: "networking", date: "2024-12-02" },
+    { title: "세 번째 게시글", category: "study", date: "2024-12-03" },
+    { title: "네 번째 게시글", category: "project", date: "2024-12-04" },
+    { title: "다섯 번째 게시글", category: "seminar", date: "2024-12-05" },
+  ];
 
   const formatDate = (dateStr: string): string => {
     const date = new Date(dateStr);
@@ -43,13 +47,8 @@ const PostManagePage: React.FC = () => {
   const currentPosts = mockData.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(mockData.length / postsPerPage);
 
-  // 페이지 변경 함수
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
-  // 이전 페이지로 이동
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-
-  // 다음 페이지로 이동
   const nextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
@@ -57,8 +56,28 @@ const PostManagePage: React.FC = () => {
     <div>
       <div className="flex flex-row justify-between mb-8">
         <div className="text-b1">게시글 관리</div>
-        <LabelButton label=" + 게시글 추가" />
+        <LabelButton
+          label=" + 게시글 추가"
+          onClick={() => setShowModal(true)}
+        />
       </div>
+
+      {/* SelectModal을 띄우기 위한 상태 */}
+      {showModal && (
+        <CategoryModal
+          onClose={() => setShowModal(false)}
+          onConfirm={() => setShowPostModal(true)} // 확인 버튼 클릭 시 PostModal 열기
+        />
+      )}
+
+      {/* PostModal을 띄우기 위한 상태 */}
+      {showPostModal && (
+        <PostModal
+          isOpen={showPostModal}
+          onClose={() => setShowPostModal(false)}
+        />
+      )}
+
       <table className="w-full mb-5">
         <thead>
           <tr className="bg-[#E1EBFD] text-black text-b3">
@@ -103,11 +122,11 @@ const PostManagePage: React.FC = () => {
         </tbody>
       </table>
 
-      <div className="flex justify-center gap-3 my-16 text-b3">
+      <div className="flex justify-center gap-2 my-16 text-b3">
         <button
           onClick={prevPage}
           disabled={currentPage === 1}
-          className="py-1 px-3 bg-[#e5e5e5] text-black disabled:opacity-50"
+          className="py-1 px-3 bg-[#e5e5e5] mr-2 text-black disabled:opacity-50"
         >
           &lt;
         </button>
@@ -129,7 +148,7 @@ const PostManagePage: React.FC = () => {
         <button
           onClick={nextPage}
           disabled={currentPage === totalPages}
-          className="py-1 px-3 bg-[#e5e5e5] text-black disabled:opacity-50"
+          className="py-1 px-3 bg-[#e5e5e5] ml-2 text-black disabled:opacity-50"
         >
           &gt;
         </button>

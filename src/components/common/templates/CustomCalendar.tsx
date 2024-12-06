@@ -107,15 +107,6 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
     setModalIsOpen(false);
   };
 
-  const handleModalChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setModalForm({
-      ...modalForm,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSave = () => {
     if (isEditing) {
       setEvents(

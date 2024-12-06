@@ -1,5 +1,11 @@
+import CustomCalendar from "../../components/common/templates/CustomCalendar";
+
 const ScheduleManagePage = () => {
-  return <div>ScheduleManage Page</div>;
+  return (
+    <div>
+      <CustomCalendar admin />
+    </div>
+  );
 };
 
 export default ScheduleManagePage;

@@ -149,6 +149,7 @@ const SignupPage = () => {
             type="text"
             value={name}
             onChange={handleChange}
+            required
           />
           {errors.name && (
             <div className="text-navi1 text-red pl-2.5">{errors.name}</div>
@@ -163,6 +164,7 @@ const SignupPage = () => {
               type="email"
               value={email}
               onChange={handleChange}
+              required
             />
             <button
               type="button"
@@ -183,6 +185,7 @@ const SignupPage = () => {
                   type="text"
                   value={usercode}
                   onChange={handleChange}
+                  required
                 />
                 <button
                   type="button"
@@ -209,6 +212,7 @@ const SignupPage = () => {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={handleChange}
+              required
             />
             <button
               type="button"

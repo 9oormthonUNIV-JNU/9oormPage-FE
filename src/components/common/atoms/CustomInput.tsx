@@ -1,15 +1,11 @@
 import React, { forwardRef } from "react";
 
-type CustomInputProps = {
+type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
-  placeholder?: string;
-  value?: string;
-  type?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ label, placeholder, value = "", type = "text", onChange }, ref) => {
+  ({ label, ...props }, ref) => {
     return (
       <div className="flex flex-col w-full gap-2.5">
         {label && (
@@ -19,10 +15,7 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
         )}
         <input
           ref={ref}
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
+          {...props} // 이 부분에서 input의 모든 속성들을 전파합니다.
           className="rounded-[20px] px-5 border border-[#E5E5E5] bg-[#F7F7F7] h-[64px] px-7.5 py-5 w-full text-b3 focus:outline-none focus:ring-1 focus:ring-[#9FBEF7] hover:shadow-[0px_0px_3px_3px_rgba(0,0,0,0.05)]"
         />
       </div>

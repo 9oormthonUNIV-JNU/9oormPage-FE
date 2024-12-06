@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Calendar, { CalendarProps } from "react-calendar";
+import { useState, useRef, useEffect } from "react";
+import Calendar from "react-calendar";
 import ScheduleModal from "../../admin/molecules/ScheduleModal";
 import LabelButton from "../../common/atoms/LabelButton";
 import "./CustomCalendar.css";
@@ -25,12 +25,15 @@ const DropdownMenuPortal = ({
 }) => {
   return ReactDOM.createPortal(
     <div
-      className="flex flex-col gap-3 p-4 bg-gray-100 rounded-xl shadow-lg"
+      className="flex flex-col gap-2 p-3 rounded-[10px] bg-white"
       style={{
+        position: "absolute",
         top: position.top,
         left: position.left,
         width: `${position.width}px`,
         boxShadow: "0px 3px 10px 0px rgba(0, 0, 0, 0.25)",
+        zIndex: 100,
+        minWidth: "120px",
       }}
     >
       {children}
@@ -41,7 +44,6 @@ const DropdownMenuPortal = ({
 
 const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
   const [date, setDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalForm, setModalForm] = useState<Schedule>({
@@ -53,13 +55,13 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [events, setEvents] = useState<Schedule[]>([
     {
-      date: "2024-10-15",
+      date: "2024-12-15",
       title: "회의",
       member: "최지원",
       description: "팀 회의",
     },
     {
-      date: "2024-10-22",
+      date: "2024-12-22",
       title: "프로젝트 마감",
       member: "최지원",
       description: "최종 마감",
@@ -140,23 +142,42 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
     setDate(new Date(date.setMonth(date.getMonth() + 1)));
   };
 
-  const handleDateClick: CalendarProps["onChange"] = (value) => {
-    if (value instanceof Date) {
-      setSelectedDate(value);
-    }
-  };
+  // Ref to track event positions
+  const eventRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    // resize 이벤트 핸들러
+    const handleResize = () => {
+      if (openDropdown) {
+        const eventElement = eventRefs.current[openDropdown];
+        if (eventElement) {
+          const rect = eventElement.getBoundingClientRect();
+          setDropdownPosition({
+            top: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
+            width: rect.width,
+          });
+        }
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [openDropdown]); // openDropdown이 변경될 때마다 위치를 재계산
 
   const toggleDropdown = (
     dateStr: string,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect(); // 클릭된 div 위치 계산
     setDropdownPosition({
-      top: rect.bottom + window.scrollY,
-      left: rect.left + window.scrollX,
-      width: rect.width,
+      top: rect.bottom + window.scrollY, // 일정 div 바로 아래에 드롭다운 위치
+      left: rect.left + window.scrollX, // 일정 div 왼쪽과 일치하도록
+      width: rect.width, // 일정 div의 넓이와 동일하게 설정
     });
-    setOpenDropdown(openDropdown === dateStr ? null : dateStr);
+    setOpenDropdown(openDropdown === dateStr ? null : dateStr); // 드롭다운 토글
   };
 
   return (
@@ -180,7 +201,6 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
       )}
 
       <Calendar
-        onChange={handleDateClick}
         value={date}
         locale="ko-KR"
         showNavigation={false}
@@ -206,29 +226,33 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
                 }`}
               >
                 {tileDate.getDate()}
-                {selectedDate &&
-                  selectedDate.toDateString() === tileDate.toDateString() && (
-                    <div className="absolute top-1/2 left-1/2 w-7 h-7 bg-[#8FABDE] rounded-full -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
-                  )}
               </div>
               {event && (
                 <div
-                  className={`flex items-center gap-2 p-2 mt-2 rounded-lg bg-[#E1EBFD] cursor-${
-                    admin ? "pointer" : "default"
-                  }`}
+                  ref={(el) => (eventRefs.current[dateStr] = el)} // Reference to the event element
+                  className={`flex items-center gap-2 p-2 mt-2 w-full rounded-lg bg-[#E1EBFD]`}
                   onClick={(e) => admin && toggleDropdown(dateStr, e)}
                 >
-                  <span className="text-navi1">{event.name}</span>
+                  <span
+                    className="text-navi1"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {event.title}
+                  </span>
                   {isOpen && admin && (
                     <DropdownMenuPortal position={dropdownPosition}>
                       <button
-                        className="p-2 text-b3 rounded-[10px] hover:bg-[#e5e5e5]"
+                        className="p-1 text-navi1 rounded-[10px] bg-white hover:bg-[#e5e5e5]"
                         onClick={() => handleEditEvent(event)}
                       >
                         일정 수정
                       </button>
                       <button
-                        className="p-2 text-b3 rounded-[10px] hover:bg-[#e5e5e5]"
+                        className="p-1 text-navi1 rounded-[10px] bg-white hover:bg-[#e5e5e5]"
                         onClick={() => handleDeleteEvent(event)}
                       >
                         일정 삭제
@@ -247,6 +271,8 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
         isOpen={modalIsOpen}
         onClose={handleCloseModal}
         onSave={handleSave}
+        date={modalForm.date}
+        member={modalForm.member}
         type={isEditing ? "수정" : "추가"}
         title={modalForm.title}
         description={modalForm.description}

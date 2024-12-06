@@ -121,7 +121,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({
           <div className="flex flex-row items-center">
             <label className="text-b3 w-20">참석자</label>
             <MultiDropdownButton
-              label="참석자를 선택하세요"
+              label="참석자를 입력하세요"
               options={options}
               name="member"
               values={form.member}

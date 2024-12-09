@@ -61,6 +61,12 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
       description: "팀 회의",
     },
     {
+      date: "2024-12-15",
+      title: "프로젝트 마감",
+      member: "최지원",
+      description: "최종 마감",
+    },
+    {
       date: "2024-12-22",
       title: "프로젝트 마감",
       member: "최지원",
@@ -133,11 +139,9 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
     setDate(new Date(date.setMonth(date.getMonth() + 1)));
   };
 
-  // Ref to track event positions
   const eventRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    // resize 이벤트 핸들러
     const handleResize = () => {
       if (openDropdown) {
         const eventElement = eventRefs.current[openDropdown];
@@ -156,7 +160,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [openDropdown]); // openDropdown이 변경될 때마다 위치를 재계산
+  }, [openDropdown]);
 
   const toggleDropdown = (
     dateStr: string,
@@ -220,8 +224,8 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({ admin }) => {
               </div>
               {event && (
                 <div
-                  ref={(el) => (eventRefs.current[dateStr] = el)} // Reference to the event element
-                  className={`flex items-center gap-2 p-2 mt-2 w-full rounded-lg bg-[#E1EBFD]`}
+                  ref={(el) => (eventRefs.current[dateStr] = el)}
+                  className={`flex items-center gap-2 py-2 px-3 mt-2 w-full rounded-lg bg-[#E1EBFD]`}
                   onClick={(e) => admin && toggleDropdown(dateStr, e)}
                 >
                   <span

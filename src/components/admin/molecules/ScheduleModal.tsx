@@ -146,11 +146,14 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({
             cancel
             onClick={onClose}
             type="button"
-            className="w-2/5 h-[50px]"
+            className="w-2/5 h-[45px] flex justify-center"
           >
             취소
           </CustomButton>
-          <CustomButton type="submit" className="w-2/5 h-[50px]">
+          <CustomButton
+            type="submit"
+            className="w-2/5 h-[45px] flex justify-center"
+          >
             {type}
           </CustomButton>
         </div>

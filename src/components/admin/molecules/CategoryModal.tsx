@@ -1,46 +1,83 @@
+import { useState } from "react";
 import CustomModal from "../../common/atoms/CustomModal";
 import CustomButton from "../../common/atoms/CustomButton";
 import DropdownButton from "../../common/atoms/DropdownButton";
+import SeminarModal from "./SeminarModal";
+import NetworkingModal from "./NetworkingModal";
+import StudyModal from "./StudyModal";
+import ProjectModal from "./ProejctModal";
 
-const CategoryModal = ({
-  onClose,
-  onConfirm,
-}: {
+type CategoryModalProps = {
   onClose: () => void;
-  onConfirm: () => void;
-}) => {
+};
+
+const CategoryModal: React.FC<CategoryModalProps> = ({ onClose }) => {
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
+  const handleConfirm = () => {
+    if (!selectedValue) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+    setActiveModal(selectedValue);
+  };
+
+  const handleCloseModal = () => {
+    setActiveModal(null);
+    onClose();
+  };
+
   return (
-    <CustomModal isOpen={true} onClose={onClose}>
-      <div className="">
-        <div className="text-b2 text-center mb-8">
-          작성할 게시글의 카테고리를 선택하세요
+    <>
+      <CustomModal isOpen={!activeModal} onClose={onClose}>
+        <div>
+          <div className="text-b2 text-center mb-8">
+            작성할 게시글의 카테고리를 선택하세요
+          </div>
+          <DropdownButton
+            options={[
+              { label: "네트워킹", value: "networking" },
+              { label: "세미나", value: "seminar" },
+              { label: "스터디", value: "study" },
+              { label: "프로젝트", value: "project" },
+            ]}
+            value={selectedValue || ""}
+            onChange={(value: string) => setSelectedValue(value)} // 선택 값 업데이트
+            buttonHeight={50}
+            dropdownHeight={55}
+          />
+          <div className="flex flex-row gap-4 justify-center w-full mt-9">
+            <CustomButton
+              cancel
+              className="w-2/5 h-[48px] flex justify-center"
+              onClick={onClose}
+            >
+              취소
+            </CustomButton>
+            <CustomButton
+              className="w-2/5 h-[48px] flex justify-center"
+              onClick={handleConfirm}
+            >
+              확인
+            </CustomButton>
+          </div>
         </div>
-        <DropdownButton
-          buttonHeight={50}
-          dropdownHeight={55}
-          options={[
-            { label: "네트워킹", value: "networking" },
-            { label: "세미나", value: "seminar" },
-            { label: "스터디", value: "study" },
-            { label: "프로젝트", value: "project" },
-          ]}
-        />
-        <div className="flex flex-row gap-4 justify-center w-full mt-9">
-          <CustomButton cancel className="w-40 h-[50px]" onClick={onClose}>
-            취소
-          </CustomButton>
-          <CustomButton
-            className="w-40 h-[50px]"
-            onClick={() => {
-              onConfirm(); // 확인 버튼 클릭 시 PostModal을 열기 위한 함수 호출
-              onClose(); // SelectModal 닫기
-            }}
-          >
-            확인
-          </CustomButton>
-        </div>
-      </div>
-    </CustomModal>
+      </CustomModal>
+
+      {activeModal === "networking" && (
+        <NetworkingModal isOpen={false} onClose={handleCloseModal} />
+      )}
+      {activeModal === "seminar" && (
+        <SeminarModal isOpen={false} onClose={handleCloseModal} />
+      )}
+      {activeModal === "study" && (
+        <StudyModal isOpen={false} onClose={handleCloseModal} />
+      )}
+      {activeModal === "project" && (
+        <ProjectModal isOpen={false} onClose={handleCloseModal} />
+      )}
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ import icon_trash from "../../../../public/icons/icon_trash.svg";
 import icon_star from "../../../../public/icons/icon_star.svg";
 import icon_star_fill from "../../../../public/icons/icon_star_fill.svg";
 
-const PostModal = ({
+const ProjectModal = ({
   isOpen,
   onClose,
 }: {
@@ -185,11 +185,14 @@ const PostModal = ({
             cancel
             onClick={onClose}
             type="button"
-            className="w-2/5 h-[50px]"
+            className="w-2/5 h-[45px] flex justify-center"
           >
             취소
           </CustomButton>
-          <CustomButton type="submit" className="w-2/5 h-[50px]">
+          <CustomButton
+            type="submit"
+            className="w-2/5 h-[45px] flex justify-center"
+          >
             작성
           </CustomButton>
         </div>
@@ -198,4 +201,4 @@ const PostModal = ({
   );
 };
 
-export default PostModal;
+export default ProjectModal;

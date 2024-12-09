@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import Modal from "react-modal";
 
 type CustomModalProps = {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
   children: ReactNode;
 };
@@ -10,7 +10,7 @@ type CustomModalProps = {
 Modal.setAppElement("#root");
 
 const CustomModal: React.FC<CustomModalProps> = ({
-  isOpen,
+  isOpen = false,
   onClose,
   children,
 }) => {

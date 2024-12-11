@@ -35,12 +35,12 @@ const DropdownMenu = ({
   };
 
   return (
-    <div className="absolute left-1/2 transform -translate-x-1/2 bg-[#F7F7F7] top-[calc(100%+10px)] border rounded-[10px] p-2 w-32 z-10 text-center">
+    <div className="absolute left-1/2 transform -translate-x-1/2 bg-[#F7F7F7] top-[calc(100%+10px)] border rounded-[10px] p-3 w-32 z-10 text-center">
       {options.map((option) => (
         <div
           key={option.path}
           onClick={() => handleOptionClick(option.path)}
-          className="px-4 py-2 cursor-pointer hover:bg-[#D8D8D8] rounded"
+          className="py-1.5 cursor-pointer hover:bg-[#D8D8D8] rounded"
         >
           {option.label}
         </div>

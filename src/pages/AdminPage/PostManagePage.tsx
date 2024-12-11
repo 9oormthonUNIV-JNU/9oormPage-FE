@@ -100,11 +100,12 @@ const PostManagePage: React.FC = () => {
                         수정
                       </span>
                     </CustomTag>
-                    <CustomTag bgColor="#F7F7F7" click>
-                      <span
-                        className="text-red w-full flex text-center"
-                        onClick={() => handleDelete(index)}
-                      >
+                    <CustomTag
+                      bgColor="#F7F7F7"
+                      click
+                      onClick={() => handleDelete(index)}
+                    >
+                      <span className="text-red w-full flex text-center">
                         삭제
                       </span>
                     </CustomTag>

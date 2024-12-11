@@ -82,7 +82,7 @@ const Header = () => {
     setHasToken(false);
     setRole("");
     setImage("");
-    nav("/login");
+    nav("/");
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -114,52 +114,49 @@ const Header = () => {
         <img className="w-44" src={logo_horizontal} alt="Logo" />
         <span className="text-white text-b3">&nbsp;: CNU</span>
       </div>
-      <div className="relative flex items-center space-x-8">
-        <ul className="flex space-x-12">
-          <li
-            className="text-white text-navi1 cursor-pointer hover:text-red"
-            onClick={() => nav("/member")}
-          >
-            Member
-          </li>
-          <li
-            className="text-white text-navi1 cursor-pointer hover:text-red"
-            onClick={() => nav("/activity")}
-          >
-            Activities
-          </li>
-          <li
-            className="text-white text-navi1 cursor-pointer hover:text-red"
-            onClick={() => nav("/recruit")}
-          >
-            Recruit
-          </li>
-        </ul>
+      <ul className="flex items-center space-x-12">
+        <li
+          className="text-white text-navi1 cursor-pointer hover:text-red"
+          onClick={() => nav("/member")}
+        >
+          Member
+        </li>
+        <li
+          className="text-white text-navi1 cursor-pointer hover:text-red"
+          onClick={() => nav("/activity")}
+        >
+          Activities
+        </li>
+        <li
+          className="text-white text-navi1 cursor-pointer hover:text-red"
+          onClick={() => nav("/recruit")}
+        >
+          Recruit
+        </li>
         {hasToken ? (
-          <div
-            className="cursor-pointer relative"
-            onClick={() => setIsDropdownOpen((prev) => !prev)}
-          >
-            <img
-              src={image || icon_circle}
-              alt="User Icon"
-              className="w-11 rounded-full"
-            />
+          <li className="cursor-pointer relative">
+            <div onClick={() => setIsDropdownOpen((prev) => !prev)}>
+              <img
+                src={image || icon_circle}
+                alt="User Icon"
+                className="w-11 rounded-full"
+              />
+            </div>
             {isDropdownOpen && hasToken && (
               <div ref={dropdownRef}>
                 <DropdownMenu role={role} onLogout={handleLogout} />
               </div>
             )}
-          </div>
+          </li>
         ) : (
-          <button
+          <li
             onClick={() => nav("/login")}
-            className="text-white text-b3 hover:text-red"
+            className="text-white text-navi1 cursor-pointer hover:text-red"
           >
             Login
-          </button>
+          </li>
         )}
-      </div>
+      </ul>
     </div>
   );
 };
